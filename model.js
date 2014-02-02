@@ -1,7 +1,7 @@
 ////////// Shared code (client and server) //////////
 
-BOARD_ROWS = 30;
-BOARD_COLS = 48;
+BOARD_ROWS = 25;
+BOARD_COLS = 40;
 PLAYER_COLORS = ["blue", "red", "yellow", "green", "orange", "pink"]
 CAPITALS = 5;
 CRITTERS = ["reef"];
