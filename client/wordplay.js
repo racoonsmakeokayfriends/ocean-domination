@@ -14,23 +14,23 @@ var game = function () {
 };
 
 var set_selected_positions = function (word) {
-  var paths = paths_for_word(game().board, word.toUpperCase());
-  var in_a_path = [];
-  var last_in_a_path = [];
+  // var paths = paths_for_word(game().board, word.toUpperCase());
+  // var in_a_path = [];
+  // var last_in_a_path = [];
 
-  for (var i = 0; i < paths.length; i++) {
-    in_a_path = in_a_path.concat(paths[i]);
-    last_in_a_path.push(paths[i].slice(-1)[0]);
-  }
+  // for (var i = 0; i < paths.length; i++) {
+  //   in_a_path = in_a_path.concat(paths[i]);
+  //   last_in_a_path.push(paths[i].slice(-1)[0]);
+  // }
 
-  for (var pos = 0; pos < 16; pos++) {
-    if (last_in_a_path.indexOf(pos) !== -1)
-      Session.set('selected_' + pos, 'last_in_path');
-    else if (in_a_path.indexOf(pos) !== -1)
-      Session.set('selected_' + pos, 'in_path');
-    else
-      Session.set('selected_' + pos, false);
-  }
+  // for (var pos = 0; pos < 16; pos++) {
+  //   if (last_in_a_path.indexOf(pos) !== -1)
+  //     Session.set('selected_' + pos, 'last_in_path');
+  //   else if (in_a_path.indexOf(pos) !== -1)
+  //     Session.set('selected_' + pos, 'in_path');
+  //   else
+  //     Session.set('selected_' + pos, false);
+  // }
 };
 
 var clear_selected_positions = function () {
@@ -79,37 +79,41 @@ Template.lobby.events({
   },
   'click button.startgame': function () {
     Meteor.call('start_new_game');
+    console.log("doo");
   }
 });
 
 //////
-////// board template: renders the board and the clock given the
+////// board template: renders the board given the
 ////// current game.  if there is no game, show a splash screen.
 //////
-var SPLASH = ['','','','',
-              'W', 'O', 'R', 'D',
-              'P', 'L', 'A', 'Y',
-              '','','',''];
 
-Template.board.square = function (i) {
+Template.board.log = function(o) {
+    console.log(o);
+}
+
+Template.board.rows = function() {
+    var g = game();
+    return g && g.board &&_.map(g.board, function(x) {
+        var row = {
+            columns: _.map(x, function(y) {
+                return {
+                    val: 3,
+                    type: y.land ? "land" : "ocean"
+                };
+            })
+        };
+        return row;
+    });
+}
+
+Template.board.square = function (curr) {
   var g = game();
-  return g && g.board && g.board[i] || SPLASH[i];
+  return g && g.board && "D";
 };
 
 Template.board.selected = function (i) {
   return Session.get('selected_' + i);
-};
-
-Template.board.clock = function () {
-  var clock = game() && game().clock;
-
-  if (!clock || clock === 0)
-    return;
-
-  // format into M:SS
-  var min = Math.floor(clock / 60);
-  var sec = clock % 60;
-  return min + ':' + (sec < 10 ? ('0' + sec) : sec);
 };
 
 Template.board.events({
@@ -125,7 +129,7 @@ Template.board.events({
 //////
 
 Template.scratchpad.show = function () {
-  return game() && game().clock > 0;
+  return game();
 };
 
 Template.scratchpad.events({
@@ -149,7 +153,7 @@ Template.scratchpad.events({
 });
 
 Template.postgame.show = function () {
-  return game() && game().clock === 0;
+  return game();
 };
 
 Template.postgame.events({
@@ -218,7 +222,7 @@ Meteor.startup(function () {
       var me = player();
       if (me && me.game_id) {
         Meteor.subscribe('games', me.game_id);
-        Meteor.subscribe('words', me.game_id, Session.get('player_id'));
+        // Meteor.subscribe('words', me.game_id, Session.get('player_id'));
       }
     }
   });
