@@ -2,20 +2,29 @@
 
 BOARD_ROWS = 30;
 BOARD_COLS = 48;
-
+PLAYER_COLORS = ["blue", "red", "yellow", "green", "orange", "pink"]
+CAPITALS = 5;
+CRITTERS = ["reef"];
 
 Games = new Meteor.Collection('games');
-// board: array of arrays
-
-// { board: ['A','I',...], clock: 60,
-//   players: [{player_id, name}], winners: [player_id] }
-
+// board: array of arrays of associative arrays
+//        with schema:
+//            land        - boolean, whether or not land
+//            owner_color - string, color of the owner of the piece
+//            critter     - string, type of critter
+//            critter_id  - id
 
 Words = new Meteor.Collection('words');
 // {player_id: 10, game_id: 123, word: 'hello', state: 'good', score: 4}
 
 Players = new Meteor.Collection('players');
-// {name: 'matt', game_id: 123}
+// {name: 'matt',
+//  game_id: 123,
+//  color: "blue"
+//  }
+
+Critters = new Meteor.Collection('critters');
+// {player_id: 123, critter: "name"}
 
 var ADJACENCIES = [];
 for (var row = 0; row < BOARD_ROWS; row++) {
@@ -36,21 +45,9 @@ for (var row = 0; row < BOARD_ROWS; row++) {
     ADJACENCIES.push(current);
 }
 
-// generate a new random selection of letters.
-new_board = function () {
-    var board = [];
-    for (var i = 0; i < BOARD_ROWS; i++) {
-        var row = [];
-        for (var j = 0; j < BOARD_COLS; j++) {
-            row.push({
-                num: i * BOARD_COLS + j,
-                land: Math.random() < 0.1
-            });
-        }
-        board.push(row)
-    }
-    return board;
-};
+randi = function (i) {
+    return Math.floor(Math.random() * i);
+}
 
 Meteor.methods({
   score_word: function (word_id) {

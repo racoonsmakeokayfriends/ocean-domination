@@ -79,7 +79,6 @@ Template.lobby.events({
   },
   'click button.startgame': function () {
     Meteor.call('start_new_game');
-    console.log("doo");
   }
 });
 
