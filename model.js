@@ -1,7 +1,7 @@
 ////////// Shared code (client and server) //////////
 
-BOARD_ROWS = 30;
-BOARD_COLS = 48;
+BOARD_ROWS = 25;
+BOARD_COLS = 40;
 
 
 Games = new Meteor.Collection('games');

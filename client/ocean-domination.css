@@ -45,12 +45,12 @@ button:active {
 
 #left {
     float: left;
-    width: 80%;
+    width: 1300px;
 }
 
 #right {
     float: left;
-    width: 20%;
+    width: 300px;
 }
 
 #clock {
@@ -61,24 +61,27 @@ button:active {
 }
 
 #board {
+    background-color:#f4f4f4;
 }
 
 .square {
     cursor: pointer;
-    width:1.7361111111111112%;
-    height:1.7361111111111112%;
+    width:31.5px;
+    height:31.5px;    
     float:left;
+    margin-right: 1px;
+    margin-top: 1px;
     text-align: center;
     background-color:#eeeee8;
     font-size: 15px;
 }
 
 .land {
-    background-color:lightgreen;
+    background-color:#6f916f;
 }
 
 .ocean {
-    background-color:lightblue;
+    background-color:#afc6e9;
 }
 
 .square.last_in_path {
